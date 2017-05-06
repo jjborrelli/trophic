@@ -17,6 +17,11 @@ An adjacency matrix of a random network where any two species are connected with
 \description{
 Democracy
 }
+\section{Reference}{
+
+Cohen, J. E., and C. M. Newman. 1985. A stochastic theory of community food webs: I. Models and aggregated data. Proceedings of the Royal Society B 224:421–448.
+}
+
 \examples{
 democracy(20, 1.86)
 }

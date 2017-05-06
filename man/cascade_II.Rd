@@ -17,6 +17,11 @@ The adjacency matrix of a cascade model food web where species higher on the nic
 \description{
 Cascade Food Web Model Type II
 }
+\section{Reference}{
+
+Cohen, J. E., and C. M. Newman. 1985. A stochastic theory of community food webs: I. Models and aggregated data. Proceedings of the Royal Society B 224:421–448.
+}
+
 \examples{
 cascade_II(20, 1.86)
 }

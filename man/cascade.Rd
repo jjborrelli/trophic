@@ -9,7 +9,7 @@ cascade(S, C)
 \arguments{
 \item{S}{Number of species in the community.}
 
-\item{C}{Average path length used to get connectance.}
+\item{C}{The connectance, or fraction of realized links in the food web.}
 }
 \value{
 The adjacency matrix of a cascade model food web. Species are arranged along a niche axis and may consume any species with a niche value less than their own with a fixed probability of \code{2CS/(S-1)}, creating a triangular matrix.
@@ -17,6 +17,11 @@ The adjacency matrix of a cascade model food web. Species are arranged along a n
 \description{
 Cascade Food Web Model
 }
+\section{Reference}{
+
+Cohen, J. E., and C. M. Newman. 1985. A stochastic theory of community food webs: I. Models and aggregated data. Proceedings of the Royal Society B 224:421–448.
+}
+
 \examples{
 cascade(20, .1)
 }
