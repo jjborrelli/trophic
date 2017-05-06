@@ -51,3 +51,24 @@ cascade <- function(S, C){
   }
   return(a)
 }
+
+
+#' Cascade Food Web Model Type II
+#'
+#' @param S Number of species in the community.
+#' @param C Average path length used to get connectance.
+#'
+#' @return The adjacency matrix of a cascade model food web where species higher on the niche axis feed on those lower with a fixed probability \code{C/S}.
+#' @export
+#'
+#' @examples
+#' cascade_II(20, 1.86)
+cascade_II <- function(S, C){
+  a <- matrix(0, nrow = S, ncol = S)
+  p <- C/S
+  for(i in 1:(S-1)){
+    a[i, (i+1):S] <- rbinom(length((i+1):S), 1, p)
+  }
+  return(a)
+}
+

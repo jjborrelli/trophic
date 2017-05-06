@@ -2,4 +2,5 @@
 
 export(anarchy)
 export(cascade)
+export(cascade_II)
 export(democracy)
