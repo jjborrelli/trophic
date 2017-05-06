@@ -22,3 +22,6 @@ Niche Model Food Web
 Williams, R. J., and N. D. Martinez. 2000. Simple rules yield complex food webs. Nature 404:180–183.
 }
 
+\examples{
+niche(20, .1)
+}

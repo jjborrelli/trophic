@@ -121,6 +121,7 @@ gen_cascade <- function(S, C){
 #' Williams, R. J., and N. D. Martinez. 2000. Simple rules yield complex food webs. Nature 404:180–183.
 #'
 #' @examples
+#' niche(20, .1)
 niche <- function(S, C){
   n.i <- runif(S)
   r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
@@ -138,4 +139,36 @@ niche <- function(S, C){
 
   a <- a[order(apply(a,2,sum)),order(apply(a,2,sum))]
   return(a)
+}
+
+
+#' Probabilistic Niche Model Food Web
+#'
+#' @param S Number of species in the community.
+#' @param C The connectance, or fraction of realized links in the food web.
+#' @param a
+#'
+#' @return An adjacency matrix for a probabilistic niche model food web.
+#' @export
+#'
+#' @section Reference:
+#' Williams, R. J., and D. Purves. 2010. The probabilistic niche model reveals the niche structure and role of body size in a complex food web. PLoS ONE 5.
+#'
+#' @examples
+#' probabilistic_niche(20, .1, .99)
+probabilistic_niche <- function(S, C, a = 0.999){
+  n.i <- runif(S)
+  r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
+  c.i <- runif(S, r.i/2, n.i)
+
+  m <- matrix(0, nrow = S, ncol = S)
+
+  for(i in 1:S){
+    for(j in 1:S){
+      m[j, i] <- rbinom(1, 1, a*exp(-((n.i[j]-c.i[i])/(r.i[i]/2))^2))
+    }
+  }
+
+  m <- m[order(apply(m,2,sum)),order(apply(m,2,sum))]
+  return(m)
 }
