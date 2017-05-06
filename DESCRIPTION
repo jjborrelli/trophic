@@ -1,12 +1,13 @@
 Package: trophic
 Type: Package
-Title: What the Package Does (Title Case)
+Title: An R package for simulating food webs
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: person("Jonathan", "Borrelli", email = "borrejj@gmail.com",
+  role = c("aut", "cre"))
+Description: This packages allows the user to generate simulated food webs using common topological models like the cascade, niche, and nested hierarchy.
+Depends: R (>= 3.4.0)
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
+Imports: igraph
