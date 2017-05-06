@@ -172,3 +172,67 @@ probabilistic_niche <- function(S, C, a = 0.999){
   m <- m[order(apply(m,2,sum)),order(apply(m,2,sum))]
   return(m)
 }
+
+
+#' Nested Hierarchy Food Web Model
+#'
+#' @param S Number of species in the community.
+#' @param C The connectance, or fraction of realized links in the food web.
+#'
+#' @return An adjacency matrix for a nested hierarchy food web
+#' @export
+#'
+#' @section Reference:
+#' Cattin, M., L. Bersier, C. Banašek-Richter, R. Baltensperger, and J.P. Gabriel. 2004. Phylogenetic constraints and adaptation explain food-web structure. Nature 427:835–839.
+#' @examples
+#' nested_hierarchy(20, .1)
+nested_hierarchy <- function(S, C){
+  n.i <- (sort(runif(S)))
+  l.i <- rbeta(S,1,((1/(2*C))-1))*n.i
+  L <- S*(S-1)*C
+  l.i <- round((l.i/sum(l.i))*L)
+  l.i <- ifelse(l.i > (S-1), S-1, l.i)
+  consumers <- which(l.i > 0)
+  l.i[1] < -0
+  prey <- list()
+  for(i in consumers){
+    prey[[i]] <- sample(1:(i), 1)
+    if(l.i[i] == 1){next}else{
+      x <- 2
+      while(x <= l.i[i]){
+        grp <- sapply(prey[1:(i-1)], function(x) prey[[i]][1] %in% x)
+        if(any(grp)){
+          p1 <- unlist(prey[grp])
+          if(length(p1) >= l.i[i]){prey[[i]] <- c(prey[[i]],sample(p1, l.i[i]-1));x <- l.i[i]+1}else{
+            prey[[i]] <- c(prey[[i]],p1)
+            x <- length(prey[[i]])+1
+          }
+          p2 <- (1:(i-1))[-prey[[i]]]
+          if(length(p2) > (l.i[i] - length(prey[[i]]))){
+            prey[[i]] <- c(prey[[i]], sample(p2, l.i[[i]] - length(prey[[i]])))
+            x <- l.i[i] + 1
+          }else{
+            prey[[i]] <- c(prey[[i]], p2)
+            x <- length(prey[[i]])
+          }
+          if(length(prey[[i]]) < l.i[i]){
+            prey[[i]] <- c(prey[[i]], sample(i:length(n.i), (l.i[i]-length(prey[[i]]))))
+            x <- length(prey[[i]])+1
+          }
+        }else{
+          p1 <- (1:(i-1))[-prey[[i]]]
+          prey[[i]] <- c(prey[[i]], sample(p1), (l.i[i]-length(prey[[i]])))
+          x <- length(prey[[i]])+1
+        }
+      }
+    }
+  }
+
+  m <- matrix(0, S, S)
+  for(i in 1:nrow(m)){
+    if(is.null(prey[[i]])){next}
+    m[i, prey[[i]]] <- 1
+  }
+
+  return(m[rev(order(n.i)),rev(order(n.i))])
+}
