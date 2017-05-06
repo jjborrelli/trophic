@@ -36,7 +36,7 @@ democracy <- function(S, C){
 #' Cascade Food Web Model
 #'
 #' @param S Number of species in the community.
-#' @param C Average path length used to get connectance.
+#' @param C The connectance, or fraction of realized links in the food web.
 #'
 #' @return The adjacency matrix of a cascade model food web. Species are arranged along a niche axis and may consume any species with a niche value less than their own with a fixed probability of \code{2CS/(S-1)}, creating a triangular matrix.
 #' @export
