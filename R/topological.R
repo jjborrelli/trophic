@@ -1,3 +1,7 @@
+################################################
+################################################
+##### Random Models
+
 #' Anarchy
 #'
 #' @param S Number of species in the community.
@@ -37,6 +41,12 @@ democracy <- function(S, C){
   a[upper.tri(a)] <- rbinom(sum(upper.tri(a)), 1, p)
   return(a)
 }
+
+
+
+################################################
+################################################
+##### Cascade Models
 
 
 #' Cascade Food Web Model
@@ -109,6 +119,12 @@ gen_cascade <- function(S, C){
 }
 
 
+
+################################################
+################################################
+##### Niche Models
+
+
 #' Niche Model Food Web
 #'
 #' @param S Number of species in the community.
@@ -172,6 +188,10 @@ probabilistic_niche <- function(S, C, a = 0.999){
   m <- m[order(apply(m,2,sum)),order(apply(m,2,sum))]
   return(m)
 }
+
+################################################
+################################################
+##### Nested Hierarchy Models
 
 
 #' Nested Hierarchy Food Web Model
