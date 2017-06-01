@@ -139,7 +139,7 @@ gen_cascade <- function(S, C){
 #' @examples
 #' niche(20, .1)
 niche <- function(S, C){
-  n.i <- runif(S)
+  n.i <- sort(runif(S), decreasing = F)
   r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
   c.i <- runif(S, r.i/2, n.i)
 
@@ -153,7 +153,6 @@ niche <- function(S, C){
     }
   }
 
-  a <- a[order(apply(a,2,sum)),order(apply(a,2,sum))]
   return(a)
 }
 
@@ -173,7 +172,7 @@ niche <- function(S, C){
 #' @examples
 #' probabilistic_niche(20, .1, .99)
 probabilistic_niche <- function(S, C, a = 0.999){
-  n.i <- runif(S)
+  n.i <- sort(runif(S), decreasing = F)
   r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
   c.i <- runif(S, r.i/2, n.i)
 
@@ -185,8 +184,35 @@ probabilistic_niche <- function(S, C, a = 0.999){
     }
   }
 
-  m <- m[order(apply(m,2,sum)),order(apply(m,2,sum))]
   return(m)
+}
+
+#' Minimum Potential Niche Model Food Web
+#'
+#' @param S Number of species in the community.
+#' @param C The connectance, or fraction of realized links in the food web.
+#'
+#' @return An adjacency matrix for a minimum potential niche model food web.
+#' @export
+#'
+#' @section Reference:
+#' Allesina, S., D. Alonso, and M. Pascual. 2008. A general model for food web structure. Science (New York, N.Y.) 320:658–61.
+#'
+#' @examples
+min_pot_niche <- function(S, C){
+  n.i <- sort(runif(S), decreasing = F)
+  r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
+  c.i <- runif(S, r.i/2, n.i)
+
+  a <- matrix(0, nrow = S, ncol = S)
+
+  for(i in 1:S){
+    for(j in 1:S){
+      if(n.i[j] > (c.i[i] - (.5 * r.i[i])) & n.i[j] < (c.i[i] + .5 * r.i[i])){
+        a[j, i] <- 1
+      }
+    }
+  }
 }
 
 ################################################
