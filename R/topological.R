@@ -139,18 +139,23 @@ gen_cascade <- function(S, C){
 #' @examples
 #' niche(20, .1)
 niche <- function(S, C){
-  n.i <- sort(runif(S), decreasing = F)
-  r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
-  c.i <- runif(S, r.i/2, n.i)
+  cond <- FALSE
+  while(!cond){
+    n.i <- sort(runif(S), decreasing = F)
+    r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
+    c.i <- runif(S, r.i/2, n.i)
 
-  a <- matrix(0, nrow = S, ncol = S)
+    a <- matrix(0, nrow = S, ncol = S)
 
-  for(i in 2:S){
-    for(j in 1:S){
-      if(n.i[j] > (c.i[i] - (.5 * r.i[i])) & n.i[j] < (c.i[i] + .5 * r.i[i])){
-        a[j, i] <- 1
+    for(i in 2:S){
+      for(j in 1:S){
+        if(n.i[j] > (c.i[i] - (.5 * r.i[i])) & n.i[j] < (c.i[i] + .5 * r.i[i])){
+          a[j, i] <- 1
+        }
       }
     }
+
+    cond <- igraph::is.connected(igraph::graph.adjacency(a))
   }
 
   return(a)
@@ -172,16 +177,21 @@ niche <- function(S, C){
 #' @examples
 #' probabilistic_niche(20, .1, .99)
 probabilistic_niche <- function(S, C, a = 0.999){
-  n.i <- sort(runif(S), decreasing = F)
-  r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
-  c.i <- runif(S, r.i/2, n.i)
+  cond <- FALSE
+  while(!cond){
+    n.i <- sort(runif(S), decreasing = F)
+    r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
+    c.i <- runif(S, r.i/2, n.i)
 
-  m <- matrix(0, nrow = S, ncol = S)
+    m <- matrix(0, nrow = S, ncol = S)
 
-  for(i in 2:S){
-    for(j in 1:S){
-      m[j, i] <- rbinom(1, 1, a*exp(-((n.i[j]-c.i[i])/(r.i[i]/2))^2))
+    for(i in 2:S){
+      for(j in 1:S){
+        m[j, i] <- rbinom(1, 1, a*exp(-((n.i[j]-c.i[i])/(r.i[i]/2))^2))
+      }
     }
+
+    cond <- igraph::is.connected(igraph::graph.adjacency(m))
   }
 
   return(m)
