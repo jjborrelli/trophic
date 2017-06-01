@@ -145,7 +145,7 @@ niche <- function(S, C){
 
   a <- matrix(0, nrow = S, ncol = S)
 
-  for(i in 1:S){
+  for(i in 2:S){
     for(j in 1:S){
       if(n.i[j] > (c.i[i] - (.5 * r.i[i])) & n.i[j] < (c.i[i] + .5 * r.i[i])){
         a[j, i] <- 1
@@ -178,7 +178,7 @@ probabilistic_niche <- function(S, C, a = 0.999){
 
   m <- matrix(0, nrow = S, ncol = S)
 
-  for(i in 1:S){
+  for(i in 2:S){
     for(j in 1:S){
       m[j, i] <- rbinom(1, 1, a*exp(-((n.i[j]-c.i[i])/(r.i[i]/2))^2))
     }
