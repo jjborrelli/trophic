@@ -209,7 +209,7 @@ probabilistic_niche <- function(S, C, a = 0.999){
 #' Allesina, S., D. Alonso, and M. Pascual. 2008. A general model for food web structure. Science (New York, N.Y.) 320:658–61.
 #'
 #' @examples
-min_pot_niche <- function(S, C){
+min_pot_niche <- function(S, C, f){
   n.i <- sort(runif(S), decreasing = F)
   r.i <- rbeta(S,1,((1/(2*C))-1))*n.i
   c.i <- runif(S, r.i/2, n.i)
@@ -223,8 +223,16 @@ min_pot_niche <- function(S, C){
       }
     }
   }
-
-
+  a <- apply(a, 2, function(x){
+    if(sum(x) <= 2){
+      return(x)
+    }else{
+      nlink <- length(x[x == 1])
+      x[x == 1][-c(1,nlink)] <- x[x == 1][-c(1,nlink)]*rbinom(nlink-2, 1, prob = (1-f))
+      return(x)
+    }
+  })
+  return(a)
 
 }
 
@@ -297,6 +305,42 @@ nested_hierarchy <- function(S, C){
 }
 
 
+################################################
+################################################
+##### Allometric Food Web
+
+#' Allometric Food Web
+#'
+#' @param S.plant Number of plant species in the community
+#' @param S.animal Number of consumer species in the community
+#' @param gamma Sets the width of the curve for prey selection. Defaults to 2.
+#' @param Ropt Optimal consumer-resource body mass ratio. Defaults to 100.
+#' @param thres Minimum feeding efficiency allowed for interactions to occur. Defaults to 0.01.
+#'
+#' @return
+#' @export
+#'
+#'#' @section Reference:
+#' Schneider FD, U Brose, BC Rall, C Guill. 2016. Animal diversity and ecosystem functioning in dynamic food webs. Nature Communications 7:12718.DOI: 10.1038/ncomms12718
+#'
+#' @examples
+allometric <- function(S.plant, S.animal, gamma = 2, Ropt = 100, thres = 0.01){
+  mat <- matrix(0, nrow = (S.plant + S.animal), ncol = (S.plant + S.animal))
+
+  log10mass_plant <- 10^runif(S.plant, 0, 6)
+  log10mass_animal <- 10^runif(S.animal, 2, 12)
+
+  consumer <- log10mass_animal
+  resource <- c(log10mass_plant, log10mass_animal)
+
+  for(i in 1:length(consumer)){
+    mat[,(S.plant + i)] <- (consumer[i]/(resource * Ropt) *
+                  exp(1 - (consumer[i]/(resource * Ropt))))^2
+  }
+  mat[mat < thres] <- 0
+
+  return(mat)
+}
 
 
 ### Run to create man pages for new/altered functions
