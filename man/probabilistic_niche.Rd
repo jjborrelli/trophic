@@ -11,7 +11,7 @@ probabilistic_niche(S, C, a = 0.999)
 
 \item{C}{The connectance, or fraction of realized links in the food web.}
 
-\item{a}{}
+\item{a}{The probability that i eats j, when j is exactly on i’s feeding optimum. Default is 0.999, the vaulue used in the original paper.}
 }
 \value{
 An adjacency matrix for a probabilistic niche model food web.
@@ -21,7 +21,7 @@ Probabilistic Niche Model Food Web
 }
 \section{Reference}{
 
-Williams, R. J., and D. Purves. 2010. The probabilistic niche model reveals the niche structure and role of body size in a complex food web. PLoS ONE 5.
+Williams, R. J., A. Anandanadesan, and D. Purves. 2010. The probabilistic niche model reveals the niche structure and role of body size in a complex food web. PLoS ONE 5.
 }
 
 \examples{
