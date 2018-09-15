@@ -41,3 +41,16 @@ cascade_likelihood<- function(A){
 
   return(log10(L.pq_A))
 }
+
+
+#' Likelihood Estimation for Niche Model Food Web
+#'
+#' @param A The food web adjacency matrix.
+#'
+#' @return The likelihood that the given adjacency matrix was produced by the Niche model.
+#' @export
+#'
+#' @examples
+niche_likelihood <- function(A){
+
+}
